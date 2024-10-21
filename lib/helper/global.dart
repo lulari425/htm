@@ -7,4 +7,4 @@ const appName = 'HTM';
 late Size mq;
 
 // chat gpt api key
-const apiKey = 'your api key';
+const apiKey = '';
