@@ -148,7 +148,7 @@ class SummaryScreen extends StatelessWidget {
                       MarkdownBody(
                         selectable: true,
                         data: snapshot.data!.text!,
-                      ), 
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

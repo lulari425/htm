@@ -74,7 +74,7 @@ class Imagen4CutScreenState extends State<Imagen4CutScreen> {
         }
       ],
       "parameters": {
-        "sampleCount": 1,
+        "sampleCount": 4,
         "negativePrompt": guidlines,
         "language": "ko"
       }
@@ -93,10 +93,12 @@ class Imagen4CutScreenState extends State<Imagen4CutScreen> {
       debugPrint('Response Body: ${response.body}', wrapWidth: 2048);
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        // final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final responseData = jsonDecode(response.body);
 
-        if (responseData.containsKey('predictions') &&
-            responseData['predictions'] != null) {
+        // if (responseData.containsKey('predictions') &&
+        //     responseData['predictions'] != null) {
+        if (responseData.containsKey('predictions')) {
           setState(() {
             for (int i = 0; i < 4; i++) {
               base64Images[i] =
@@ -174,9 +176,9 @@ class Imagen4CutScreenState extends State<Imagen4CutScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Imagen3 - 4컷 AI 이미지 생성',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
           ),
@@ -193,34 +195,38 @@ class Imagen4CutScreenState extends State<Imagen4CutScreen> {
       body: Center(
         child: isLoading
             ? const CircularProgressIndicator()
-            : base64Images.every((img) => img != null)
-                ? SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Wrap(
-                          spacing: 10.0,
-                          runSpacing: 10.0,
-                          children: List.generate(
-                            4,
-                            (index) =>
-                                ImageDisplay(base64Image: base64Images[index]!),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: saveImageToGallery,
-                          child: const Text('Save All to Gallery'),
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: shareImages,
-                          child: const Text('Share All Images'),
-                        ),
-                      ],
+            // : base64Images.every((img) => img != null)
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Wrap(
+                      spacing: 10.0,
+                      runSpacing: 10.0,
+                      children: List.generate(
+                        4,
+                        (index) => base64Images[index] != null
+                            ? Image.memory(
+                                base64Decode(base64Images[index]!),
+                                width:
+                                    MediaQuery.of(context).size.width / 2 - 15,
+                                fit: BoxFit.cover,
+                              )
+                            : const SizedBox(),
+                      ),
                     ),
-                  )
-                : const Text('Press the button to generate 4-panel images.'),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: saveImageToGallery,
+                      child: const Text('Save All to Gallery'),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: shareImages,
+                      child: const Text('Share All Images'),
+                    ),
+                  ],
+                ),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -232,14 +238,14 @@ class Imagen4CutScreenState extends State<Imagen4CutScreen> {
   }
 }
 
-class ImageDisplay extends StatelessWidget {
-  final String base64Image;
+// class ImageDisplay extends StatelessWidget {
+//   final String base64Image;
 
-  const ImageDisplay({super.key, required this.base64Image});
+//   const ImageDisplay({super.key, required this.base64Image});
 
-  @override
-  Widget build(BuildContext context) {
-    final decodedBytes = base64Decode(base64Image);
-    return Image.memory(decodedBytes);
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final decodedBytes = base64Decode(base64Image);
+//     return Image.memory(decodedBytes);
+//   }
+// }

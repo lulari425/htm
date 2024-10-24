@@ -189,9 +189,9 @@ class ImagenTestScreenState extends State<ImagenTestScreen> {
     print("test:  $prompt");
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Imagen3 - 1컷 AI 이미지 생성',
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.0, // Adjust the font size here
             fontWeight: FontWeight.bold,
           ), // Optional: Adjust weight
